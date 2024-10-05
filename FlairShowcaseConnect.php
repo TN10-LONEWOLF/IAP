@@ -99,3 +99,18 @@ public function escape_values($posted_values): string
                 break;
         }
     }
+
+        public function select_while($sql){
+        switch ($this->db_type) {
+            case 'PDO':
+                $result = $this->connection->prepare($sql);
+                $result->execute();
+                return $result->fetchAll(PDO::FETCH_ASSOC);
+                break;
+            case 'MySQLi':
+                $result = $this->connection->query($sql);
+                for ($res = array (); $row = $result->fetch_assoc(); $res[] = $row);
+                return $res;
+                break;
+        }
+    }
