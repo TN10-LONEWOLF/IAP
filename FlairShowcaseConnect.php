@@ -84,3 +84,18 @@ public function escape_values($posted_values): string
         $fieldValues = implode("', '",  array_values($data));
         $sth = "INSERT INTO $table (`$fieldNames`) VALUES ('$fieldValues')";
         return $this->extracted($sth);
+         }
+
+ public function select($sql){
+        switch ($this->db_type) {
+            case 'PDO':
+                $result = $this->connection->prepare($sql);
+                $result->execute();
+                return $result->fetchAll(PDO::FETCH_ASSOC)[0];
+                break;
+            case 'MySQLi':
+                $result = $this->connection->query($sql);
+                return $result->fetch_assoc();
+                break;
+        }
+    }
