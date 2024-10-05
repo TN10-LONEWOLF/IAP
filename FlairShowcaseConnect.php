@@ -76,3 +76,11 @@ public function escape_values($posted_values): string
                 break;
         }
     }
+
+         public function insert($table, $data){
+        ksort($data);
+        $fieldDetails = NULL;
+        $fieldNames = implode('`, `',  array_keys($data));
+        $fieldValues = implode("', '",  array_values($data));
+        $sth = "INSERT INTO $table (`$fieldNames`) VALUES ('$fieldValues')";
+        return $this->extracted($sth);
